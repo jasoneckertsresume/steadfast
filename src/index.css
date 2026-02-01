@@ -431,7 +431,10 @@ body {
 }
 
 .btn-primary {
-  @apply bg-accent-cyan text-bg-primary hover:bg-white hover:shadow-[0_0_15px_rgba(0, 240, 255, 0.5)];
+  @apply bg-accent-cyan text-bg-primary hover:bg-white;
+  &:hover {
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+  }
 }
 
 .btn-secondary {
