@@ -1,0 +1,543 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0a0a0c;
+  --color-bg-card: #0d1117;
+  --color-bg-card-elevated: #161b22;
+
+  --color-accent-cyan: #00f0ff;
+  --color-accent-magenta: #ff0080;
+  --color-accent-yellow: #d29922;
+  --color-accent-green: #3fb950;
+
+  --color-text-primary: #f0f6fc;
+  --color-text-muted: #8b949e;
+  --color-text-dim: #484f58;
+
+  --font-display: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+:root {
+  font-family: var(--font-display);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+
+  /* Glitch System Variables */
+  --glitch-intensity: 0;
+  --scan-opacity: 0.03;
+  --aberration-offset: 1px;
+  --noise-opacity: 0;
+  --tear-frequency: 0;
+  --flicker-intensity: 0;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+}
+
+/* --- Glitch Tiers --- */
+
+/* Tier 1 */
+[data-glitch-tier="1"] {
+  --glitch-intensity: 0.1;
+  --scan-opacity: 0.03;
+  --aberration-offset: 1px;
+  --noise-opacity: 0;
+  --tear-frequency: 0;
+  --flicker-intensity: 0.02;
+}
+
+/* Tier 2 */
+[data-glitch-tier="2"] {
+  --glitch-intensity: 0.3;
+  --scan-opacity: 0.06;
+  --aberration-offset: 3px;
+  --noise-opacity: 0.02;
+  --tear-frequency: 0.1;
+  --flicker-intensity: 0.04;
+}
+
+/* Tier 3 */
+[data-glitch-tier="3"] {
+  --glitch-intensity: 0.5;
+  --scan-opacity: 0.1;
+  --aberration-offset: 5px;
+  --noise-opacity: 0.05;
+  --tear-frequency: 0.3;
+  --flicker-intensity: 0.08;
+}
+
+/* Tier 4 */
+[data-glitch-tier="4"] {
+  --glitch-intensity: 0.7;
+  --scan-opacity: 0.15;
+  --aberration-offset: 8px;
+  --noise-opacity: 0.1;
+  --tear-frequency: 0.5;
+  --flicker-intensity: 0.15;
+}
+
+/* Tier 5 */
+[data-glitch-tier="5"] {
+  --glitch-intensity: 1;
+  --scan-opacity: 0.2;
+  --aberration-offset: 12px;
+  --noise-opacity: 0.15;
+  --tear-frequency: 0.8;
+  --flicker-intensity: 0.25;
+}
+
+/* --- Animations & Effects --- */
+
+.grid-bg {
+  background-image:
+    linear-gradient(rgba(0, 240, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 240, 255, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.scanlines {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1000;
+  background: repeating-linear-gradient(0deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(0, 0, 0, var(--scan-opacity)) 2px,
+      rgba(0, 0, 0, var(--scan-opacity)) 4px);
+  animation: scan-scroll 8s linear infinite;
+}
+
+@keyframes scan-scroll {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(8px);
+  }
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: var(--noise-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  animation: noise-shift 0.5s steps(10) infinite;
+}
+
+@keyframes noise-shift {
+  0% {
+    transform: translate(0, 0);
+  }
+
+  10% {
+    transform: translate(-5%, -5%);
+  }
+
+  20% {
+    transform: translate(5%, 5%);
+  }
+
+  30% {
+    transform: translate(-5%, 5%);
+  }
+
+  40% {
+    transform: translate(5%, -5%);
+  }
+
+  50% {
+    transform: translate(-5%, 0);
+  }
+
+  60% {
+    transform: translate(5%, 0);
+  }
+
+  70% {
+    transform: translate(0, 5%);
+  }
+
+  80% {
+    transform: translate(0, -5%);
+  }
+
+  90% {
+    transform: translate(5%, 5%);
+  }
+
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.glitch-text {
+  text-shadow:
+    calc(var(--aberration-offset) * -1) 0 rgba(255, 0, 0, 0.7),
+    var(--aberration-offset) 0 rgba(0, 255, 255, 0.7);
+}
+
+.glitch-text-animated {
+  animation: aberration-shift 4s ease-in-out infinite;
+}
+
+@keyframes aberration-shift {
+
+  0%,
+  100% {
+    text-shadow:
+      calc(var(--aberration-offset) * -1) 0 rgba(255, 0, 0, 0.7),
+      var(--aberration-offset) 0 rgba(0, 255, 255, 0.7);
+  }
+
+  25% {
+    text-shadow:
+      calc(var(--aberration-offset) * -0.5) calc(var(--aberration-offset) * 0.3) rgba(255, 0, 0, 0.7),
+      calc(var(--aberration-offset) * 0.5) calc(var(--aberration-offset) * -0.3) rgba(0, 255, 255, 0.7);
+  }
+
+  50% {
+    text-shadow:
+      var(--aberration-offset) 0 rgba(255, 0, 0, 0.7),
+      calc(var(--aberration-offset) * -1) 0 rgba(0, 255, 255, 0.7);
+  }
+
+  75% {
+    text-shadow:
+      calc(var(--aberration-offset) * 0.3) calc(var(--aberration-offset) * -0.5) rgba(255, 0, 0, 0.7),
+      calc(var(--aberration-offset) * -0.3) calc(var(--aberration-offset) * 0.5) rgba(0, 255, 255, 0.7);
+  }
+}
+
+.flicker-container {
+  animation: flicker calc(2s / var(--glitch-intensity, 1)) steps(1) infinite;
+}
+
+@keyframes flicker {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  92% {
+    opacity: 1;
+  }
+
+  93% {
+    opacity: calc(1 - var(--flicker-intensity));
+  }
+
+  94% {
+    opacity: 1;
+  }
+
+  95% {
+    opacity: calc(1 - var(--flicker-intensity) * 0.5);
+  }
+
+  96% {
+    opacity: 1;
+  }
+}
+
+.tear-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 998;
+  overflow: hidden;
+}
+
+.tear-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: inherit;
+  animation: tear-flash 0.15s steps(2);
+  background-color: var(--color-bg-primary);
+  mix-blend-mode: hard-light;
+}
+
+@keyframes tear-flash {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.block-displacement {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 997;
+}
+
+.displaced-block {
+  position: absolute;
+  background: var(--color-bg-primary);
+  mix-blend-mode: difference;
+  animation: block-flash 0.2s steps(3);
+}
+
+@keyframes block-flash {
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.glitch-burst {
+  animation: decision-burst 0.4s ease-out;
+}
+
+@keyframes decision-burst {
+  0% {
+    filter: none;
+  }
+
+  10% {
+    filter: hue-rotate(90deg) brightness(1.2);
+    transform: translateX(-3px);
+  }
+
+  20% {
+    filter: invert(100%);
+    transform: translateX(3px);
+  }
+
+  30% {
+    filter: hue-rotate(-90deg) saturate(2);
+    transform: translateX(-2px);
+  }
+
+  40% {
+    filter: brightness(0.8);
+    transform: translateX(2px);
+  }
+
+  50% {
+    filter: none;
+    transform: translateX(0);
+  }
+
+  100% {
+    filter: none;
+    transform: translateX(0);
+  }
+}
+
+/* Metric Danger Pulse */
+
+.metric-bar[data-critical="true"] .metric-bar-fill {
+  animation: danger-pulse 1s ease-in-out infinite;
+}
+
+@keyframes danger-pulse {
+
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 rgba(248, 81, 73, 0);
+  }
+
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 10px rgba(248, 81, 73, 0.5);
+  }
+}
+
+.metric-bar[data-critical="true"] .metric-label {
+  animation: label-flicker 0.5s steps(2) infinite;
+}
+
+@keyframes label-flicker {
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+
+  .scan-lines,
+  .noise-overlay,
+  .tear-container,
+  .block-displacement {
+    display: none;
+  }
+
+  .glitch-text,
+  .glitch-text-animated {
+    text-shadow: none;
+  }
+
+  .flicker-container {
+    animation: none;
+  }
+
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+.reduced-motion .scan-lines,
+.reduced-motion .noise-overlay,
+.reduced-motion .tear-container,
+.reduced-motion .block-displacement {
+  display: none !important;
+}
+
+.reduced-motion .glitch-text,
+.reduced-motion .glitch-text-animated {
+  text-shadow: none !important;
+}
+
+.reduced-motion .flicker-container {
+  animation: none !important;
+}
+
+/* Existing utility classes */
+.btn {
+  @apply px-6 py-3 font-mono font-bold tracking-wider transition-all duration-200 cursor-pointer uppercase;
+}
+
+.btn-primary {
+  @apply bg-accent-cyan text-bg-primary hover:bg-white hover:shadow-[0_0_15px_rgba(0, 240, 255, 0.5)];
+}
+
+.btn-secondary {
+  @apply border border-accent-cyan text-accent-cyan bg-transparent hover:bg-accent-cyan/10;
+}
+
+.nav-btn {
+  @apply px-4 py-2 text-xs font-mono border border-white/20 text-text-muted hover:border-white/50 hover:text-white transition-all disabled:opacity-30 disabled:pointer-events-none;
+}
+
+/* Layout Utilities */
+.ending-screen {
+  @apply max-w-2xl mx-auto;
+}
+
+.ending-header {
+  @apply text-center mb-12;
+}
+
+.ending-divider {
+  @apply h-px bg-gradient-to-r from-transparent via-white/20 to-transparent my-8;
+}
+
+.ending-section {
+  @apply mb-8;
+}
+
+.section-label {
+  @apply text-xs font-mono text-text-muted tracking-[0.2em] mb-4 text-center;
+}
+
+.ending-actions {
+  @apply flex flex-col md:flex-row gap-4 justify-center mt-12;
+}
+
+/* Alignment Styles */
+.alignment-block {
+  @apply flex items-center justify-center gap-3 my-4 p-4 bg-bg-card border border-white/10;
+}
+
+.alignment-label {
+  @apply text-xs font-mono text-text-muted;
+}
+
+.alignment-value {
+  @apply font-bold tracking-wide;
+}
+
+.alignment-value.true_to_yourself {
+  @apply text-accent-cyan;
+}
+
+.alignment-value.mostly_aligned {
+  @apply text-accent-green;
+}
+
+.alignment-value.compromised {
+  @apply text-accent-yellow;
+}
+
+.alignment-value.lost_your_way {
+  @apply text-accent-magenta;
+}
+
+.alignment-value.betrayed_values {
+  @apply text-red-500;
+}
+
+.motivation-text {
+  @apply text-xl text-center italic mb-4 text-white;
+}
+
+.reflection-text {
+  @apply text-sm text-center text-text-muted px-8 italic;
+}
+
+.callbacks-list {
+  @apply space-y-2;
+}
+
+.callback-item {
+  @apply text-sm text-text-dim text-center border-l-2 border-white/10 pl-4 py-1 italic;
+}
+
+/* MetricBar Component Styles */
+.metric-bar-row {
+  @apply flex items-center gap-4 mb-2 font-mono text-sm;
+}
+
+.metric-label {
+  @apply w-12 font-bold;
+}
+
+.metric-bar-track {
+  @apply flex-1 h-2 bg-bg-card-elevated overflow-hidden;
+}
+
+.metric-bar-fill {
+  @apply h-full transition-all duration-1000 ease-out;
+}
+
+.metric-value {
+  @apply w-8 text-right text-text-muted;
+}
+
+/* PostMortem Styles */
+.postmortem-screen {
+  @apply max-w-4xl mx-auto py-8;
+}
