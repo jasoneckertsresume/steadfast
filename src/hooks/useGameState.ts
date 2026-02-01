@@ -149,7 +149,7 @@ export function useGameState() {
             }
 
             // Check for interstitial
-            if (shouldShowInterstitial(prev.currentDecisionIndex)) {
+            if (shouldShowInterstitial()) {
                 return {
                     ...prev,
                     metrics: newMetrics,
