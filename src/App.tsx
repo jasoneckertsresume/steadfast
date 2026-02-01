@@ -54,8 +54,6 @@ function App() {
       <div className="max-w-4xl mx-auto relative z-10">
         {state.phase === 'landing' ? (
           <LandingScreen onStart={handleStartGame} />
-        ) : state.phase === 'opening-context' ? (
-          <OpeningContext onContinue={handleContinueFromContext} />
         ) : state.phase === 'opening-motivation' ? (
           <MotivationChoice onSelect={handleMotivationSelect} />
         ) : state.phase === 'interstitial' ? (

@@ -51,7 +51,7 @@ export const internalMonologue: Record<number, string> = {
 };
 
 // Helper to check if we should show an interstitial after a decision ID
-export const shouldShowInterstitial = (decisionId: number): boolean => {
+export const shouldShowInterstitial = (): boolean => {
     return false; // Interstitials disabled per user request
     // return !!interstitials[decisionId];
 };

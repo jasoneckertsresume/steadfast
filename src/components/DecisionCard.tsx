@@ -19,17 +19,10 @@ export const DecisionCard: React.FC<DecisionCardProps> = ({
     blockMessage,
     blockRequirement
 }) => {
-    const { id, title, description, effect } = choice;
+    const { id, title, description } = choice;
 
     const [revealed, setRevealed] = useState(false);
     const [revealing, setRevealing] = useState(false);
-
-    const metricLabels: Record<string, string> = {
-        satisfaction: 'SAT',
-        revenue: 'REV',
-        technicalHealth: 'TECH',
-        marketPosition: 'MKT'
-    };
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();

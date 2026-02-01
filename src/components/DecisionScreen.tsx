@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import type { Decision, Choice, ConsequenceFlag, DecisionChoice, Metrics } from '../types';
 import { internalMonologue } from '../data/narrative';
 import { isChoiceBlocked } from '../data/blocking';
@@ -29,8 +29,8 @@ export const DecisionScreen: React.FC<DecisionScreenProps> = ({
     lastChoice,
     onDecision
 }) => {
-    const [showMonologue, setShowMonologue] = useState(true);
-    const [showCards, setShowCards] = useState(true);
+    const showMonologue = true;
+    const showCards = true;
     const monologue = internalMonologue[decision.id];
 
     const { isBursting, triggerBurst } = useDecisionGlitch();
